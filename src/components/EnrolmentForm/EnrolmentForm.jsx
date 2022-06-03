@@ -6,23 +6,28 @@ class EnrolmentForm extends Component {
         super(props);
         this.title = '';
         this.text = '';
-
+        this.category = 'No category';
     }
 
-    _handleTitleChange(event) {
-        event.stopPropagation();
-        this.title = event.target.value;
+    _handleTitleChange(e) {
+        e.stopPropagation();
+        this.title = e.target.value;
     }
 
-    _handleTextAreaChange(event) {
-        event.stopPropagation();
-        this.text = event.target.value;
+    _handleTextAreaChange(e) {
+        e.stopPropagation();
+        this.text = e.target.value;
+    }
+    
+    _createNote(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.props.createNote(this.title, this.text, this.category);
     }
 
-    _createNote(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        this.props.createNote(this.title, this.text);
+    _handleCategoryChange(e) {
+        e.stopPropagation();
+        this.category = e.target.value;
     }
 
     render() {
@@ -31,6 +36,17 @@ class EnrolmentForm extends Component {
                 className='enrolment-form'
                 onSubmit={this._createNote.bind(this)}
             >
+                <select
+                    className='enrolment-form_input'
+                    onChange={this._handleCategoryChange.bind(this)}
+                >   
+                    <option>{this.category}</option>
+                    {this.props.categories.map((category, index) => {
+                        return (
+                            <option key={index}>{category}</option>
+                        );
+                    })}
+                </select>
                 <input 
                     type='text' 
                     placeholder='Title'
